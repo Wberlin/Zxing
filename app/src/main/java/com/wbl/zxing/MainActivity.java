@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.djcps.library.IosDialog.IosDialog;
 import com.djcps.library.IosDialog.SheetItem;
 import com.djcps.library.permission.PermissionRequestCode;
+import com.djcps.library.photo.utils.BitmapUtils;
 import com.djcps.library.photo.widget.PhotoMenuDialog.PhotoMenuDialog;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
@@ -24,7 +25,9 @@ import com.wbl.zxing.decodeImage.ImageDecodeManager;
 import com.wbl.zxing.decodeImage.MainActivityHandler;
 import com.wbl.zxing.permission.PermissionListener;
 import com.wbl.zxing.permission.PermissionManager;
+import com.wbl.zxing.utils.BitmapUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -53,8 +56,9 @@ public class MainActivity extends AppCompatActivity {
             case 1000://用于得到选择图片的返回结果
                 if(data!=null){
                     List<Bitmap> bitmapList=data.getParcelableArrayListExtra("bitmap");
-                    if(bitmapList!=null){
-                        bt=bitmapList.get(0);
+                    List<String> paths=data.getStringArrayListExtra("data");
+                    if(bitmapList!=null&&paths!=null){
+                        bt= BitmapUtil.getBitmap(paths.get(0));
                         mIvImg.setImageBitmap(bt);
                     }
                 }
@@ -62,10 +66,15 @@ public class MainActivity extends AppCompatActivity {
 
                 break;
             case 2000://用于拍照得到
-                if(data!=null){
-                    bt=data.getParcelableExtra("data");
-                    if(bt!=null)
-                        mIvImg.setImageBitmap(bt);
+                try{
+                    String imagePath=mPhotoMenu.getImageUri();
+                    if(imagePath!=null){
+                            bt= BitmapUtil.getBitmap(imagePath);
+                            if(bt!=null)
+                            mIvImg.setImageBitmap(bt);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
 
                 break;
