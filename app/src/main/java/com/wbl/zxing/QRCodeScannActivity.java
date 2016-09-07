@@ -174,13 +174,15 @@ public class QRCodeScannActivity extends Activity implements Callback, View.OnCl
             Toast.makeText(QRCodeScannActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
             return;
         }
-        Intent resultIntent = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putString("result", resultString);
-        //bundle.putParcelable("bitmap", bitmap);
-        resultIntent.putExtras(bundle);
-        this.setResult(100, resultIntent);
+        Toast.makeText(this,resultString,Toast.LENGTH_LONG).show();
         QRCodeScannActivity.this.finish();
+        //Intent resultIntent = new Intent();
+        //Bundle bundle = new Bundle();
+        //bundle.putString("result", resultString);
+        //bundle.putParcelable("bitmap", bitmap);
+        //resultIntent.putExtras(bundle);
+        //this.setResult(100, resultIntent);
+        //QRCodeScannActivity.this.finish();
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {
